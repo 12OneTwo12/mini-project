@@ -2,7 +2,7 @@ package dev.gifticon.model;
 
 import java.time.LocalDate;
 
-public class gifticon {
+public class Gifticon {
 
 	int gifticonId;
 	String serialNumber;
@@ -11,14 +11,14 @@ public class gifticon {
 	LocalDate paymentDate;
 	int usedAmount;
 	
-	public gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate) {
+	public Gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate) {
 		this.gifticonId = gifticonId;
 		this.serialNumber = serialNumber;
 		this.amount = amount;
 		this.expiryDate = expiryDate;
 	}
 	
-	public gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate, LocalDate paymentDate,
+	public Gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate, LocalDate paymentDate,
 			int usedAmount) {
 		this.gifticonId = gifticonId;
 		this.serialNumber = serialNumber;
@@ -26,6 +26,17 @@ public class gifticon {
 		this.expiryDate = expiryDate;
 		this.paymentDate = paymentDate;
 		this.usedAmount = usedAmount;
+	}
+
+	public Gifticon() {}
+
+	public Gifticon(String serialNumber, int amount) {
+		this.serialNumber = serialNumber;
+		this.amount = amount;
+	}
+
+	public Gifticon(int amount) {
+		this.amount = amount;
 	}
 
 	public int getGifticonId() {
