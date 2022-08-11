@@ -5,17 +5,28 @@ import java.time.LocalDate;
 public class Gifticon {
 
 	int gifticonId;
+	int recordId;
 	String serialNumber;
 	int amount;
 	LocalDate expiryDate;
 	LocalDate paymentDate;
 	int usedAmount;
 	
+	
+	// Gifticon 테이블에 관한 생성자 
 	public Gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate) {
 		this.gifticonId = gifticonId;
 		this.serialNumber = serialNumber;
 		this.amount = amount;
 		this.expiryDate = expiryDate;
+	}
+	
+	// RECORD 테이블에 관한 생성자. record_id, gifticon_id, payment_date, used_amount
+	public Gifticon(int recordId, int gifticonId, LocalDate paymentDate, int usedAmount) {
+		this.recordId = recordId;
+		this.gifticonId = gifticonId;
+		this.paymentDate = paymentDate;
+		this.usedAmount = usedAmount;
 	}
 	
 	public Gifticon(int gifticonId, String serialNumber, int amount, LocalDate expiryDate, LocalDate paymentDate,
@@ -38,6 +49,8 @@ public class Gifticon {
 	public Gifticon(int amount) {
 		this.amount = amount;
 	}
+
+
 
 	public int getGifticonId() {
 		return gifticonId;

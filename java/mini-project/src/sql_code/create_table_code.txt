@@ -1,0 +1,15 @@
+create table gifticon (
+gifticon_id int,
+serial_number varchar(14),
+amount int,
+expiry_date date,
+constraint pk_gifticon primary key (gifticon_id)
+);
+
+create table record (
+record_id int,
+gifticon_id int,
+payment_date date,
+used_amount int,
+constraint pk_record primary key (record_id)
+);
