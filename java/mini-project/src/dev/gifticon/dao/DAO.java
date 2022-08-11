@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,8 @@ public class DAO {
 			while (resultSet.next()) {
 				Gifticon gifticon = new Gifticon(resultSet.getInt("gifticon_id"),
 												 resultSet.getDate("expiry_date").toLocalDate(), 
-												 resultSet.getInt("amount"));
+												 resultSet.getInt("amount"),
+												 resultSet.getString("serial_number"));
 				
 				return gifticon;
 			}
@@ -67,7 +69,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 
-		return gifticon;
+		return null;
 	}
 
 	private PreparedStatement createPreparedStatement(Connection connection, String sql, int gifticon_id) throws SQLException {
@@ -75,25 +77,72 @@ public class DAO {
 		preparedStatement.setInt(1, gifticon_id);
 		return preparedStatement;
 	}
-	private PreparedStatement createStatement(Connection connection, String sql, String SerialNumber) throws SQLException {
+	private PreparedStatement createStatement(Connection connection, String sql, Gifticon gifticon) throws SQLException {
 		preparedStatement = connection.prepareStatement(sql);
-		preparedStatement.setString(1, SerialNumber);
+		
+		preparedStatement.setString(1, gifticon.getSerialNumber());
 		return preparedStatement;
 	}
 	
-	public boolean zeroAmount(String SerialNumber) {
-
-		final String selectQuery = "UPDATE gifticon SET amount = 0 WHERE serial_number = ? ;" ;
+	public boolean zeroAmount(Gifticon gifticon) {
+		final String selectQuery = "UPDATE gifticon SET amount = -1 WHERE serial_number = ?;" ;
 
 		try (Connection connection = Utils.getConnection();
-				PreparedStatement preparedStatement = createStatement(connection, selectQuery, SerialNumber);) {
-			preparedStatement.executeUpdate();
-			
-			return true;
+				PreparedStatement preparedStatement = createStatement(connection, selectQuery, gifticon);
+				) {
+				preparedStatement.executeUpdate();
+				return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
+	}
+	
+	private PreparedStatement useAmoutStatement1(Connection connection, String sql, Gifticon gifticon, int i) throws SQLException {
+		preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setInt(1, gifticon.getAmount()-i);
+		preparedStatement.setString(2, gifticon.getSerialNumber());
+		
+		return preparedStatement;
+	}
+	
+	private PreparedStatement useAmoutStatement2(Connection connection, String sql, Gifticon gifticon, int i) throws SQLException {
+		preparedStatement = connection.prepareStatement(sql);
+		
+		preparedStatement.setInt(1, gifticon.getGifticonId());
+		preparedStatement.setString(2, LocalDate.now().toString());
+		preparedStatement.setInt(3, i);
+		
+		return preparedStatement;
+	}
+	
+	
+	public boolean useAmount1(Gifticon gifticon, int i) {
+		final String selectQuery = "UPDATE gifticon SET amount = ? WHERE serial_number = ?;" ;
 
+		try (Connection connection = Utils.getConnection();
+				PreparedStatement preparedStatement = useAmoutStatement1(connection, selectQuery, gifticon,i);
+				) {
+				preparedStatement.executeUpdate();
+				return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean useAmount2(Gifticon gifticon, int i) {
+		final String selectQuery = "INSERT INTO record (gifticon_id, payment_date, used_amount) VALUES(?, ?, ?);" ;
+
+		try (Connection connection = Utils.getConnection();
+				PreparedStatement preparedStatement = useAmoutStatement2(connection, selectQuery, gifticon,i);
+				) {
+				preparedStatement.executeUpdate();
+				return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

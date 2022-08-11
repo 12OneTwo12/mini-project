@@ -9,7 +9,7 @@ import dev.gifticon.model.Gifticon;
 
 public class Service {
 
-	private final DAO dao = new DAO();
+	private final static DAO dao = new DAO();
 	
 	public void getReaction() {
 		Scanner react = new Scanner(System.in);
@@ -21,7 +21,7 @@ public class Service {
 
 	}
 
-	public Gifticon createGfticon(int amount) {
+	public static Gifticon createGfticon(int amount) {
 
 		Gifticon newGifticon = new Gifticon();
 
@@ -43,9 +43,7 @@ public class Service {
 
 		newGifticon.setSerialNumber(result);
 
-//			int exYear = (int) (1 + 2022);
 		LocalDate exMonth = LocalDate.now();
-//			LocalDate exDay = LocalDate.now();
 
 		newGifticon.setExpiryDate(exMonth.plusYears(1));
 
@@ -56,12 +54,11 @@ public class Service {
 	}
 
 	public Gifticon pulsCreateGifticon(Gifticon firstGifticon, Gifticon secondGifticon) {
-		Gifticon realNewGifticon = createGfticon(firstGifticon.getAmount()+secondGifticon.getAmount());
-		System.out.println("난 실행됬다?");
-		dao.zeroAmount(firstGifticon.getSerialNumber());
-		dao.zeroAmount(secondGifticon.getSerialNumber());
-//		secondGifticon.사용;
-		return realNewGifticon;
+		Gifticon newGifticon = createGfticon(firstGifticon.getAmount()+secondGifticon.getAmount());
+		
+//		dao.zeroAmount(firstGifticon);
+//		dao.zeroAmount(secondGifticon);
+		return newGifticon;
 	}
 	
 	public List<Gifticon> findBySerialNumbers(String answer) {
@@ -74,6 +71,12 @@ public class Service {
 
 	public Gifticon findBySerialNumber(String answer) {
 		return dao.findBySerialNumber(answer);
+	}
+	
+	public void useAmount(Gifticon gifticon,int i) {
+		dao.useAmount1(gifticon,i);
+		dao.useAmount2(gifticon,i);
+		
 	}
 
 }

@@ -1,16 +1,19 @@
 package dev.gifticon.view;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import dev.gifticon.dao.DAO;
 import dev.gifticon.model.Gifticon;
 import dev.gifticon.scanner.GifticonScanner;
 import dev.gifticon.service.Service;
 
 public class View {
 
+	Scanner scan = new Scanner(System.in);
 	private final GifticonScanner gifticonScanner = new GifticonScanner();
 	private final Service service = new Service();
+	private final DAO dao = new DAO();
 	
 	public void viewMain() {
 		System.out.println("==================================================");
@@ -50,13 +53,13 @@ public class View {
 		gifticonScanner.getGifticonSerialNumberNumber();
 		String answer = gifticonScanner.getGifticonSerialNumberNumber();
 		if (answer.length() == 14) {
-			
 			System.out.println("결제 금액을 입력해주세요");
 			System.out.println("결제 금액 : ");
-//			gifticonScanner.getUseAmount();
 			int useAmout = gifticonScanner.getUseAmount();
-			Gifticon gifticon = new Gifticon(answer, useAmout);
-			service.useGifticon(gifticon);
+			Gifticon gifticon = service.findBySerialNumber(answer);
+			service.useAmount(gifticon,useAmout);
+//			Gifticon gifticon = new Gifticon(answer, useAmout);
+//			service.useGifticon(gifticon);
 			System.out.println("정상적으로 사용 되셨습니다.");
 		} else if (answer.length() == 0) {
 			viewMain();
@@ -73,11 +76,8 @@ public class View {
 		System.out.println("[ 기프티콘 구매 ]  ( 메인 페이지로 돌아가기 : 숫자 0 입력 )");
 		System.out.println("충전 금액을 입력해주세요");
 		System.out.println("충전 금액 : ");
-//		gifticonScanner.amount();
 		int amount = gifticonScanner.amount();
 		if(amount > 0) {
-//			Gifticon gifticon = new Gifticon(amount);
-//			service.createGifticon(gifticon);
 			Gifticon newGifticon = service.createGfticon(amount);
 			System.out.println("일련 번호 : " + newGifticon.getSerialNumber());
 			System.out.println("유효기간 : " + newGifticon.getExpiryDate());
@@ -140,18 +140,20 @@ public class View {
 		System.out.println("[ 기프티콘 합산 ]  ( 메인 페이지로 돌아가기 : 입력 값 없이 엔터 )");
 		System.out.println("첫번 째 기프티콘 일련 번호를 입력해주세요");
 		System.out.println("첫번 째 기프티콘 일련 번호 : ");
-		gifticonScanner.getGifticonSerialNumberNumber();
-		String firstGifticon = gifticonScanner.getGifticonSerialNumberNumber();
+//		gifticonScanner.getGifticonSerialNumberNumber();
+		String firstGifticon = scan.nextLine();
 		if (firstGifticon.length() == 14) {
 			Gifticon firstGifticonn = service.findBySerialNumber(firstGifticon);
 			System.out.println("두번 째 기프티콘 일련 번호를 입력해주세요");
 			System.out.println("두번 째 기프티콘 일련 번호 : ");
-			gifticonScanner.getGifticonSerialNumberNumber();
-			String secondGifticon = gifticonScanner.getGifticonSerialNumberNumber();
+			String secondGifticon = scan.nextLine();
 			if (secondGifticon.length() == 14) {
 				Gifticon secondGifticonn = service.findBySerialNumber(secondGifticon);
+				Gifticon newGifticon = service.pulsCreateGifticon(firstGifticonn,secondGifticonn);
 				
-				service.pulsCreateGifticon(firstGifticonn,secondGifticonn).getSerialNumber();
+				dao.zeroAmount(firstGifticonn);
+				dao.zeroAmount(secondGifticonn);
+				System.out.println("새로 만들어진 기프티콘 일련 번호 : " + newGifticon.getSerialNumber());
 			} else if (secondGifticon.length() == 0) {
 				viewMain();
 			} else {

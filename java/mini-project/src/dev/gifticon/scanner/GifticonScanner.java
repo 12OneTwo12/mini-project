@@ -8,6 +8,7 @@ public class GifticonScanner {
 	
 	public int getReaction() {
 		int answer = react.nextInt();
+//		react.nextLine();
 		return answer;
 	}
 	

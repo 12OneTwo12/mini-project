@@ -20,33 +20,4 @@ public class Utils {
 		return connection;
 	}
 }
-	// 테이블 생성 메서드
-//	public static void dropAndCreateTable() {
-//		// 기존테이블 날리고 새로만들면 에러 안날꺼니까
-//		final String dropTableQuery = "DROP TABLE IF EXISTS todo";
-//		
-//		// Statement : Query 전달 객체
-//		Connection conn;
-//		Statement stmt;
-//		try {
-//			conn = getConnection();
-//			stmt = conn.createStatement();
-//			stmt.execute(dropTableQuery); // 진행시키는 코드
-//			
-//			final String createTableQuery = 
-//		            "CREATE TABLE todo (" +
-//		            "id INT(5) unsigned NOT NULL AUTO_INCREMENT," +
-//		            "title VARCHAR(255)," +
-//		            "description VARCHAR(255)," +
-//		            "due_date DATE," +
-//		            "is_completed BOOLEAN DEFAULT false," +
-//		            "PRIMARY KEY (id))"; 
-//			
-//			stmt.execute(createTableQuery);
-//			System.out.println("Table has created.");
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//}
+

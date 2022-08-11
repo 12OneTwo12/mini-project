@@ -58,7 +58,9 @@ public class Gifticon {
 		this.amount = amount;
 	}
 
-
+	public Gifticon(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
 	public Gifticon(int recordId, int gifticon_id, LocalDate paymentDate, int usedAmount){
 	}
@@ -68,6 +70,13 @@ public class Gifticon {
 		this.expiryDate = expiryDate;
 		this.amount = amount;
 		
+	}
+
+	public Gifticon(int gifticonId, LocalDate expiryDate, int amount, String serialNumber) {
+		this.gifticonId = gifticonId;
+		this.expiryDate = expiryDate;
+		this.amount = amount;
+		this.serialNumber = serialNumber;
 	}
 
 	public int getGifticonId() {
