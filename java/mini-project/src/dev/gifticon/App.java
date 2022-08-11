@@ -10,7 +10,6 @@ public class App {
 		
 		controller.viewMain();
 		
-		
 	}
 
 }

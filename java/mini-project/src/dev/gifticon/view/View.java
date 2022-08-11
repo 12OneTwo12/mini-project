@@ -1,5 +1,8 @@
 package dev.gifticon.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.gifticon.model.Gifticon;
 import dev.gifticon.scanner.GifticonScanner;
 import dev.gifticon.service.Service;
@@ -94,8 +97,10 @@ public class View {
 		System.out.println("일련 번호 : ");
 		gifticonScanner.getGifticonSerialNumberNumber();
 		String answer = gifticonScanner.getGifticonSerialNumberNumber();
+		
 		if (answer.length() == 14) {
-			service.lookupAmount(answer);
+			Gifticon gifticon = service.findBySerialNumber(answer);
+			System.out.println("잔액은 " + gifticon.getAmount() + "원 입니다");
 		} else if (answer.length() == 0) {
 			viewMain();
 		} else {
@@ -113,7 +118,14 @@ public class View {
 		gifticonScanner.getGifticonSerialNumberNumber();
 		String answer = gifticonScanner.getGifticonSerialNumberNumber();
 		if (answer.length() == 14) {
-			service.lookupUsedData(answer);
+//			try {
+				List<Gifticon> gifticons = service.findBySerialNumbers(answer);
+				for(Gifticon gifticon : gifticons) {
+					System.out.println(gifticon.getPaymentDate()+ "에 " + gifticon.getUsedAmount() + "원 사용하셨습니다");
+//				}
+//			} catch(Exception e) {
+//				System.out.println("결제 내역이 없습니다.");
+			}
 		} else if (answer.length() == 0) {
 			viewMain();
 		} else {
@@ -125,27 +137,29 @@ public class View {
 	
 	public void viewSummation() {
 		System.out.println("==================================================");
-		System.out.println("[ 결제 내역 확인 ]  ( 메인 페이지로 돌아가기 : 입력 값 없이 엔터 )");
+		System.out.println("[ 기프티콘 합산 ]  ( 메인 페이지로 돌아가기 : 입력 값 없이 엔터 )");
 		System.out.println("첫번 째 기프티콘 일련 번호를 입력해주세요");
 		System.out.println("첫번 째 기프티콘 일련 번호 : ");
 		gifticonScanner.getGifticonSerialNumberNumber();
 		String firstGifticon = gifticonScanner.getGifticonSerialNumberNumber();
 		if (firstGifticon.length() == 14) {
-			
+			Gifticon firstGifticonn = service.findBySerialNumber(firstGifticon);
+			System.out.println("두번 째 기프티콘 일련 번호를 입력해주세요");
+			System.out.println("두번 째 기프티콘 일련 번호 : ");
+			gifticonScanner.getGifticonSerialNumberNumber();
+			String secondGifticon = gifticonScanner.getGifticonSerialNumberNumber();
+			if (secondGifticon.length() == 14) {
+				Gifticon secondGifticonn = service.findBySerialNumber(secondGifticon);
+				
+				service.pulsCreateGifticon(firstGifticonn,secondGifticonn).getSerialNumber();
+			} else if (secondGifticon.length() == 0) {
+				viewMain();
+			} else {
+				System.out.println("잘못 입력되었습니다.");
+				System.out.println("일련번호 12자리를 입력해주세요");
+				return;
+			}
 		} else if (firstGifticon.length() == 0) {
-			viewMain();
-		} else {
-			System.out.println("잘못 입력되었습니다.");
-			System.out.println("일련번호 12자리를 입력해주세요");
-			return;
-		}
-		System.out.println("두번 째 기프티콘 일련 번호를 입력해주세요");
-		System.out.println("두번 째 기프티콘 일련 번호 : ");
-		gifticonScanner.getGifticonSerialNumberNumber();
-		String secondGifticon = gifticonScanner.getGifticonSerialNumberNumber();
-		if (secondGifticon.length() == 14) {
-			
-		} else if (secondGifticon.length() == 0) {
 			viewMain();
 		} else {
 			System.out.println("잘못 입력되었습니다.");
@@ -154,5 +168,5 @@ public class View {
 		}
 		
 	}
-
+	
 }

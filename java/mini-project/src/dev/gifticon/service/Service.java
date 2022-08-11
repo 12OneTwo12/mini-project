@@ -1,12 +1,16 @@
 package dev.gifticon.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
+import dev.gifticon.dao.DAO;
 import dev.gifticon.model.Gifticon;
 
 public class Service {
 
+	private final DAO dao = new DAO();
+	
 	public void getReaction() {
 		Scanner react = new Scanner(System.in);
 		int answer = react.nextInt();
@@ -47,16 +51,29 @@ public class Service {
 
 		newGifticon.setAmount(amount);
 
+		dao.save(newGifticon);
 		return newGifticon;
 	}
 
-
-	public void lookupAmount(String answer) {
-
+	public Gifticon pulsCreateGifticon(Gifticon firstGifticon, Gifticon secondGifticon) {
+		Gifticon realNewGifticon = createGfticon(firstGifticon.getAmount()+secondGifticon.getAmount());
+		System.out.println("난 실행됬다?");
+		dao.zeroAmount(firstGifticon.getSerialNumber());
+		dao.zeroAmount(secondGifticon.getSerialNumber());
+//		secondGifticon.사용;
+		return realNewGifticon;
+	}
+	
+	public List<Gifticon> findBySerialNumbers(String answer) {
+		return dao.findBySerialNumbers(answer);
 	}
 
 	public void lookupUsedData(String answer) {
 
+	}
+
+	public Gifticon findBySerialNumber(String answer) {
+		return dao.findBySerialNumber(answer);
 	}
 
 }
