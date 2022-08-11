@@ -47,6 +47,7 @@ public class View {
 		gifticonScanner.getGifticonSerialNumberNumber();
 		String answer = gifticonScanner.getGifticonSerialNumberNumber();
 		if (answer.length() == 14) {
+			
 			System.out.println("결제 금액을 입력해주세요");
 			System.out.println("결제 금액 : ");
 //			gifticonScanner.getUseAmount();
@@ -74,7 +75,9 @@ public class View {
 		if(amount > 0) {
 //			Gifticon gifticon = new Gifticon(amount);
 //			service.createGifticon(gifticon);
-			service.createGifticon(amount);
+			Gifticon newGifticon = service.createGfticon(amount);
+			System.out.println("일련 번호 : " + newGifticon.getSerialNumber());
+			System.out.println("유효기간 : " + newGifticon.getExpiryDate());
 		} else if (amount == 0) {
 			viewMain();
 		} else {
