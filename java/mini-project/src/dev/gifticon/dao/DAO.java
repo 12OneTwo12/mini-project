@@ -18,7 +18,6 @@ public class DAO {
 	private Statement statement; // stmt
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet; // rs
-	private Gifticon gifticon;
 	
 	public List<Gifticon> findBySerialNumbers(String SerialNumber) {
 		List<Gifticon> gifticons = new ArrayList<>();

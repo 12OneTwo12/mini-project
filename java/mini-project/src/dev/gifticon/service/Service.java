@@ -2,7 +2,6 @@ package dev.gifticon.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
 import dev.gifticon.dao.DAO;
 import dev.gifticon.model.Gifticon;
@@ -11,17 +10,11 @@ public class Service {
 
 	private final static DAO dao = new DAO();
 	
-	public void getReaction() {
-		Scanner react = new Scanner(System.in);
-		int answer = react.nextInt();
-
-	}
-
 	public void useGifticon(Gifticon gifticon) {
 
 	}
 
-	public static Gifticon createGfticon(int amount) {
+	public Gifticon createGfticon(int amount) {
 
 		Gifticon newGifticon = new Gifticon();
 
